@@ -1,0 +1,172 @@
+using System;
+using System.Buffers.Text;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+
+public abstract class BaseUIManager : Singleton<BaseUIManager>
+{
+    [SerializeField]
+    private List<BaseUI> prefabs;
+
+    protected Dictionary<Type, BaseUI> uiPrefabs = new();
+
+    protected Dictionary<Type, BaseUI> uiLoadeds = new();
+
+    protected abstract Transform GetParent();
+
+    protected abstract string GetFolderPrefabs();
+
+    protected override void LoadComponent()
+    {
+        base.LoadComponent();
+        LoadUIPrefabs();
+    }
+
+    private void LoadUIPrefabs()
+    {
+        prefabs = new();
+
+        string[] files = Directory.GetFiles(GetFolderPrefabs(), "*.prefab");
+
+        foreach (string file in files)
+        {
+            BaseUI prefab = AssetDatabase.LoadAssetAtPath(file, typeof(BaseUI)) as BaseUI;
+            if (prefab != null)
+            {
+                prefabs.Add(prefab);
+            }
+        }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        uiPrefabs = new();
+        foreach (var item in prefabs)
+        {
+            uiPrefabs[item.GetType()] = item;
+        }
+    }
+
+    /*
+     * Hiển thị U
+     */
+    public virtual T Show<T>() where T : BaseUI
+    {
+        T ui = GetUI<T>();
+
+        ui.SetUp();
+        ui.Show();
+
+        ui.transform.SetSiblingIndex(GetParent().childCount - 1);
+
+        return ui;
+    }
+
+    /*
+     * Ẩn UI show khoảng thời gian delayTime mặc định = 0
+     */
+    public virtual void Hide<T>(float delayTime = 0) where T : BaseUI
+    {
+        if (IsUILoaded<T>())
+        {
+            uiLoadeds[typeof(T)].Hide(delayTime);
+        }
+    }
+
+    /*
+     * Kiểm tra UI đã được tạo hay chưa
+     */
+    public virtual bool IsUILoaded<T>() where T : BaseUI
+    {
+        return uiLoadeds.ContainsKey(typeof(T)) && uiLoadeds[typeof(T)] != null;
+    }
+
+    /*
+     * Kiểm tra UI đã được hiển thị chưa 
+     */
+    public virtual bool IsUIDisplayed<T>() where T : BaseUI
+    {
+        return IsUILoaded<T>() && uiLoadeds[typeof(T)].gameObject.activeSelf;
+    }
+
+    /*
+     * Kiểm tra chỉ show một mình UI 
+     */
+    public virtual bool IsUIOnlyDisplay<T>() where T : BaseUI
+    {
+        bool isOnlyDisplay = false;
+
+        foreach (var item in uiLoadeds)
+        {
+            if (item.Value != null && item.Value.gameObject.activeSelf)
+            {
+                if (item.Key == typeof(T))
+                {
+                    isOnlyDisplay = true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return isOnlyDisplay;
+    }
+
+    /*
+     * Kiểm tra UI có hiển thị trên cùng không 
+     */
+    public virtual bool IsUIOnTop<T>() where T : BaseUI
+    {
+        Transform parent = GetParent();
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            if (parent.GetChild(i).gameObject.activeSelf)
+            {
+                if (parent.GetChild(i).TryGetComponent<BaseUI>(out var ui))
+                {
+                    return uiLoadeds.ContainsKey(ui.GetType()) && ui.GetType() == typeof(T);
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+     * Get UI
+     */
+    public virtual T GetUI<T>() where T : BaseUI
+    {
+        if (!IsUILoaded<T>())
+        {
+            T prefab = GetUIPrefab<T>();
+            T ui = Instantiate(prefab, GetParent());
+            ui.name = prefab.name;
+
+            uiLoadeds[typeof(T)] = ui;
+        }
+        return uiLoadeds[typeof(T)] as T;
+    }
+
+    private T GetUIPrefab<T>() where T : BaseUI
+    {
+        return uiPrefabs[typeof(T)] as T;
+    }
+
+    /*
+     * Ẩn toàn bộ UI  
+     */
+    public virtual void HideAll()
+    {
+        foreach (var item in uiLoadeds)
+        {
+            if (item.Value != null && item.Value.gameObject.activeSelf)
+            {
+                item.Value.Hide();
+            }
+        }
+    }
+}
