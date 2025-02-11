@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TestButton : BaseButton
 {
-    private bool b = false;
 
     protected override void OnClick()
     {
@@ -20,6 +19,10 @@ public class TestButton : BaseButton
 
         //UIManager.Instance.Show<TwoUI>();
         //UIManager.Instance.Show<OneUI>();
+
+
+
+
         SaveManager.Instance.DataSave.Score = 1;
     }
 }

@@ -2,11 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseSaveManager<T> : BaseMonoBehaviour where T : class
+public abstract class BaseSaveManager<B, T> : BaseMonoBehaviour where B : BaseMonoBehaviour where T : class
 {
     [SerializeField]
     protected T dataSave;
     public T DataSave => dataSave;
+
+    #region Singleton
+    private static B instance;
+    public static B Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<B>();
+                if (instance == null)
+                {
+                    GameObject singleton = new(typeof(B).Name);
+                    instance = singleton.AddComponent<B>();
+                    DontDestroyOnLoad(singleton);
+                }
+            }
+            return instance;
+        }
+    }
+
+    protected override void Awake()
+    {
+        if (instance == null)
+        {
+            instance = GetComponent<B>();
+            Transform root = transform.root;
+            if (root != transform)
+            {
+                DontDestroyOnLoad(root);
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+            Init();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
 
     private void OnApplicationFocus(bool focus)
     {
@@ -29,7 +72,6 @@ public abstract class BaseSaveManager<T> : BaseMonoBehaviour where T : class
         dataSave ??= GetDefaultData();
     }
 
-    [ContextMenu("Clear")]
     public virtual void ClearSave()
     {
         dataSave = GetDefaultData();
@@ -37,7 +79,6 @@ public abstract class BaseSaveManager<T> : BaseMonoBehaviour where T : class
         SaveData();
     }
 
-    [ContextMenu("Save Data")]
     public virtual void SaveData()
     {
         dataSave ??= GetDefaultData();

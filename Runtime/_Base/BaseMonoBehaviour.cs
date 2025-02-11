@@ -5,12 +5,12 @@ public abstract class BaseMonoBehaviour : MonoBehaviour
 {
     protected virtual void Reset()
     {
-        LoadComponent();
+        LoadComponents();
         ResetValue();
         AutoReference.Sync(this);
     }
 
-    protected virtual void LoadComponent()
+    protected virtual void LoadComponents()
     {
 
     }

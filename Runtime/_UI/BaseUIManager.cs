@@ -5,10 +5,10 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class BaseUIManager : Singleton<BaseUIManager>
+public abstract class BaseUIManager<B> : BaseMonoBehaviour where B : BaseMonoBehaviour
 {
-    [SerializeField]
-    private List<BaseUI> prefabs;
+    [SerializeField] protected bool dontDestroyOnLoad = false;
+    [SerializeField] private List<BaseUI> prefabs;
 
     protected Dictionary<Type, BaseUI> uiPrefabs = new();
 
@@ -18,9 +18,9 @@ public abstract class BaseUIManager : Singleton<BaseUIManager>
 
     protected abstract string GetFolderPrefabs();
 
-    protected override void LoadComponent()
+    protected override void LoadComponents()
     {
-        base.LoadComponent();
+        base.LoadComponents();
         LoadUIPrefabs();
     }
 
@@ -40,9 +40,54 @@ public abstract class BaseUIManager : Singleton<BaseUIManager>
         }
     }
 
+    #region Singleton
+    private static B instance;
+    public static B Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<B>();
+                if (instance == null)
+                {
+                    GameObject singleton = new(typeof(B).Name);
+                    instance = singleton.AddComponent<B>();
+                    DontDestroyOnLoad(singleton);
+                }
+            }
+            return instance;
+        }
+    }
+
     protected override void Awake()
     {
-        base.Awake();
+        if (instance == null)
+        {
+            instance = this as B;
+            if (dontDestroyOnLoad)
+            {
+                Transform root = transform.root;
+                if (root != transform)
+                {
+                    DontDestroyOnLoad(root);
+                }
+                else
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
+            }
+            CreateUIPrefabs();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    private void CreateUIPrefabs()
+    {
         uiPrefabs = new();
         foreach (var item in prefabs)
         {

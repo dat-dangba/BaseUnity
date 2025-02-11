@@ -46,6 +46,7 @@ public class Singleton<T> : BaseMonoBehaviour where T : MonoBehaviour
         }
         else
         {
+            Debug.Log($"datdb - Destroy");
             Destroy(gameObject);
         }
     }

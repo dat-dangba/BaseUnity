@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Teo.AutoReference;
 using UnityEngine;
 
-public class UIManager : BaseUIManager
+public class UIManager : BaseUIManager<UIManager>
 {
     [SerializeField, Get]
     private Transform parent;
@@ -19,9 +19,8 @@ public class UIManager : BaseUIManager
         return "Assets/UI";
     }
 
-    [ContextMenu("Test")]
-    private void Test()
+    public void Test()
     {
-        Debug.Log($"datdb - {IsUIOnTop<OneUI>()}");
+
     }
 }
