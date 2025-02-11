@@ -1,4 +1,5 @@
 using Teo.AutoReference;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class BaseMonoBehaviour : MonoBehaviour
@@ -54,5 +55,14 @@ public abstract class BaseMonoBehaviour : MonoBehaviour
     protected virtual void FixedUpdate()
     {
 
+    }
+
+    protected T LoadAssetAtPath<T>(string assetPath) where T : Object
+    {
+#if UNITY_EDITOR
+        return AssetDatabase.LoadAssetAtPath<T>(assetPath);
+#else
+        return null;
+#endif
     }
 }
