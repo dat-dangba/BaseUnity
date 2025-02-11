@@ -22,10 +22,12 @@ public abstract class BaseButton : BaseMonoBehaviour, IPointerDownHandler, IPoin
 
     protected virtual void AddOnClickEvent()
     {
-        button.onClick.AddListener(() =>
-        {
-            OnClick();
-        });
+        button.onClick.AddListener(OnClickListener);
+    }
+
+    protected virtual void OnClickListener()
+    {
+        OnClick();
     }
 
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
