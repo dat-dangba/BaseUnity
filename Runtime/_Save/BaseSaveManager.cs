@@ -65,7 +65,7 @@ public abstract class BaseSaveManager<B, T> : BaseMonoBehaviour where B : BaseMo
         LoadData();
     }
 
-    private void LoadData()
+    protected virtual void LoadData()
     {
         string jsonString = SaveSystem.GetString(GetSaveGame());
         dataSave = JsonUtility.FromJson<T>(jsonString);
