@@ -1,5 +1,4 @@
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -28,6 +27,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     {
         prefabs = new();
 
+#if UNITY_EDITOR
         string[] files = Directory.GetFiles(GetFolderPrefabs(), "*.prefab");
 
         foreach (string file in files)
@@ -38,6 +38,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
                 prefabs.Add(prefab);
             }
         }
+#endif
     }
 
     #region Singleton
