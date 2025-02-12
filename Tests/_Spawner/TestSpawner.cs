@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Teo.AutoReference;
 using UnityEngine;
 
-public class TestSpawner : BaseSpawner<ComponentSpawner, TestSpawner>
+public class TestSpawner : BaseSpawner<TestSpawner, ComponentSpawner>
 {
     [SerializeField, FindInAssets, Path("Assets/BaseUnity/Tests/_Spawner/ComponentSpawner.prefab")]
     private ComponentSpawner prefab;

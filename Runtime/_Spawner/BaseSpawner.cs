@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseSpawner<T, B> : BaseMonoBehaviour where T : Component where B : BaseMonoBehaviour
+public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component where I : BaseMonoBehaviour
 {
     [SerializeField] protected bool dontDestroyOnLoad = false;
     [SerializeField] private int spawnedCount = 0;
@@ -10,18 +10,18 @@ public abstract class BaseSpawner<T, B> : BaseMonoBehaviour where T : Component 
     protected int SpawnedCount { get => spawnedCount; private set => spawnedCount = value; }
 
     #region Singleton
-    private static B instance;
-    public static B Instance
+    private static I instance;
+    public static I Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<B>();
+                instance = FindObjectOfType<I>();
                 if (instance == null)
                 {
-                    GameObject singleton = new(typeof(B).Name);
-                    instance = singleton.AddComponent<B>();
+                    GameObject singleton = new(typeof(I).Name);
+                    instance = singleton.AddComponent<I>();
                     DontDestroyOnLoad(singleton);
                 }
             }
@@ -33,7 +33,7 @@ public abstract class BaseSpawner<T, B> : BaseMonoBehaviour where T : Component 
     {
         if (instance == null)
         {
-            instance = this as B;
+            instance = this as I;
             if (dontDestroyOnLoad)
             {
                 Transform root = transform.root;
