@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class BaseUIManager<B> : BaseMonoBehaviour where B : BaseMonoBehaviour
+public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBehaviour
 {
     [SerializeField] protected bool dontDestroyOnLoad = false;
     [SerializeField] private List<BaseUI> prefabs;
@@ -41,18 +41,18 @@ public abstract class BaseUIManager<B> : BaseMonoBehaviour where B : BaseMonoBeh
     }
 
     #region Singleton
-    private static B instance;
-    public static B Instance
+    private static I instance;
+    public static I Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<B>();
+                instance = FindObjectOfType<I>();
                 if (instance == null)
                 {
-                    GameObject singleton = new(typeof(B).Name);
-                    instance = singleton.AddComponent<B>();
+                    GameObject singleton = new(typeof(I).Name);
+                    instance = singleton.AddComponent<I>();
                     DontDestroyOnLoad(singleton);
                 }
             }
@@ -64,7 +64,7 @@ public abstract class BaseUIManager<B> : BaseMonoBehaviour where B : BaseMonoBeh
     {
         if (instance == null)
         {
-            instance = this as B;
+            instance = this as I;
             if (dontDestroyOnLoad)
             {
                 Transform root = transform.root;

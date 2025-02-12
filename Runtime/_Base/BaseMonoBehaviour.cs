@@ -6,9 +6,14 @@ public abstract class BaseMonoBehaviour : MonoBehaviour
 {
     protected virtual void Reset()
     {
+        AutoReference.Sync(this);
+    }
+
+    [OnAfterSync]
+    protected virtual void OnAfterSyncAttribute()
+    {
         LoadComponents();
         ResetValue();
-        AutoReference.Sync(this);
     }
 
     protected virtual void LoadComponents()
@@ -17,12 +22,6 @@ public abstract class BaseMonoBehaviour : MonoBehaviour
     }
 
     protected virtual void ResetValue()
-    {
-
-    }
-
-    [OnAfterSync]
-    protected virtual void OnAfterSyncAttribute()
     {
 
     }

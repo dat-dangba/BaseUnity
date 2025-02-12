@@ -2,25 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseSaveManager<B, T> : BaseMonoBehaviour where B : BaseMonoBehaviour where T : class
+public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : BaseMonoBehaviour where T : class
 {
     [SerializeField]
     protected T dataSave;
     public T DataSave => dataSave;
 
     #region Singleton
-    private static B instance;
-    public static B Instance
+    private static I instance;
+    public static I Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<B>();
+                instance = FindObjectOfType<I>();
                 if (instance == null)
                 {
-                    GameObject singleton = new(typeof(B).Name);
-                    instance = singleton.AddComponent<B>();
+                    GameObject singleton = new(typeof(I).Name);
+                    instance = singleton.AddComponent<I>();
                     DontDestroyOnLoad(singleton);
                 }
             }
@@ -32,7 +32,7 @@ public abstract class BaseSaveManager<B, T> : BaseMonoBehaviour where B : BaseMo
     {
         if (instance == null)
         {
-            instance = GetComponent<B>();
+            instance = GetComponent<I>();
             Transform root = transform.root;
             if (root != transform)
             {
