@@ -215,4 +215,18 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
             }
         }
     }
+
+    /*
+     * Ẩn toàn bộ UI trừ T 
+     */
+    public virtual void HideAllIgnore<T>() where T : BaseUI
+    {
+        foreach (var item in uiLoadeds)
+        {
+            if (item.Value != null && item.Value.gameObject.activeSelf && item.GetType() != typeof(T))
+            {
+                item.Value.Hide();
+            }
+        }
+    }
 }
