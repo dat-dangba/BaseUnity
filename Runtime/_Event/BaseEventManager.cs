@@ -32,7 +32,6 @@ public abstract class BaseEventManager : Singleton<BaseEventManager>
     protected override void OnEnable()
     {
         base.OnEnable();
-        Debug.Log($"datdb - OnEnable BaseEventManager");
         TimeRequest.OnTimeRequestSuccess += CheckTime;
         TimeManager.OnTimeUpdate += CheckTime;
         TimeManager.OnNextDay += CheckTime;
@@ -52,7 +51,6 @@ public abstract class BaseEventManager : Singleton<BaseEventManager>
 
         int totalDays = TimeManager.Instance.GetTotalDays();
         int day = timeData.Day;
-        Debug.Log($"datdb - CheckTime {totalDays} {day}");
         CheckNextDay(totalDays, day);
         CheckNextWeek(totalDays, day);
         CheckNextMonth(totalDays, day);
@@ -82,7 +80,6 @@ public abstract class BaseEventManager : Singleton<BaseEventManager>
         int monthOfYear = TimeManager.Instance.GetMonthInYear();
 
         bool isNexMonth = totalDays > day && monthOfYear != timeData.Month;
-        Debug.Log($"datdb - CheckNextMonth {isNexMonth} {monthOfYear} {timeData.Month}");
 
         timeData.Month = monthOfYear;
         CheckEventStatus(monthlyEvents, isNexMonth);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TimeRequest : MonoBehaviour
 {
     private int countRequest;
+    private bool isRequested;
 
     private readonly List<string> ntps = new()
     {
@@ -18,6 +19,10 @@ public class TimeRequest : MonoBehaviour
 
     public void Request()
     {
+        if (isRequested)
+        {
+            return;
+        }
         countRequest = 0;
         if (Application.internetReachability != NetworkReachability.NotReachable)
         {
@@ -31,6 +36,10 @@ public class TimeRequest : MonoBehaviour
 
     private void RequestNetWorkTime()
     {
+        if (isRequested)
+        {
+            return;
+        }
         try
         {
             NtpClient client = new(ntps[countRequest]);
@@ -41,9 +50,8 @@ public class TimeRequest : MonoBehaviour
                 InitTime(dt);
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Debug.LogError($"datdb - {e.Message}");
             countRequest++;
             if (countRequest >= ntps.Count)
             {
@@ -60,6 +68,7 @@ public class TimeRequest : MonoBehaviour
     private void InitTime(DateTime dateTime)
     {
         Debug.Log($"datdb - InitTime {dateTime.ToLongDateString()} {dateTime.ToLongTimeString()}");
+        isRequested = true;
         TimeManager.Instance.Init(TimeManager.Instance.GetTotalSeconds(dateTime));
         OnTimeRequestSuccess?.Invoke();
     }
