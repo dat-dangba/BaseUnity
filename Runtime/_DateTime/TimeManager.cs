@@ -48,7 +48,6 @@ public class TimeManager : Singleton<TimeManager>
 
     public virtual void Request()
     {
-        Debug.Log($"datdb - Request {isInitialed}");
         if (!isInitialed)
         {
             timeRequest.Request();

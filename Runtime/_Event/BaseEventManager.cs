@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Teo.AutoReference;
 using UnityEngine;
 
-public abstract class BaseEventManager : Singleton<BaseEventManager>
+public abstract class BaseEventManager<I> : BaseMonoBehaviour where I : MonoBehaviour
 {
     [SerializeField, GetInChildren] private List<BaseEvent> events;
     [Space(10)]
@@ -14,11 +14,47 @@ public abstract class BaseEventManager : Singleton<BaseEventManager>
 
     private TimeData timeData;
 
-    protected override void ResetValue()
+    #region Singleton
+    private static I instance;
+    public static I Instance
     {
-        base.ResetValue();
-        dontDestroyOnLoad = true;
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<I>();
+                if (instance == null)
+                {
+                    GameObject singleton = new(typeof(I).Name);
+                    instance = singleton.AddComponent<I>();
+                    DontDestroyOnLoad(singleton);
+                }
+            }
+            return instance;
+        }
     }
+
+    protected override void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this as I;
+            Transform root = transform.root;
+            if (root != transform)
+            {
+                DontDestroyOnLoad(root);
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
 
     protected override void OnAfterSyncAttribute()
     {
