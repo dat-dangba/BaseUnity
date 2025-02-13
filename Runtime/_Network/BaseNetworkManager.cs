@@ -55,7 +55,7 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
     }
     #endregion
 
-    public void StartCheckConnection()
+    public virtual void StartCheckConnection()
     {
         StartCoroutine(CheckInternetConnection());
 
@@ -65,12 +65,12 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
         }
     }
 
-    public void CheckConnection()
+    public virtual void CheckConnection()
     {
         StartCoroutine(CheckInternetConnection());
     }
 
-    private IEnumerator CheckInternetPeriodically()
+    protected virtual IEnumerator CheckInternetPeriodically()
     {
         while (true)
         {
@@ -82,12 +82,12 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
         }
     }
 
-    public bool IsNetworkAvailable()
+    public virtual bool IsNetworkAvailable()
     {
         return Application.internetReachability != NetworkReachability.NotReachable;
     }
 
-    private string GetCheckUrl()
+    protected virtual string GetCheckUrl()
     {
 #if UNITY_ANDROID
         return "https://connectivitycheck.gstatic.com/generate_204";
@@ -98,7 +98,7 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
 #endif
     }
 
-    private IEnumerator CheckInternetConnection()
+    protected virtual IEnumerator CheckInternetConnection()
     {
         if (isRequesting)
         {
