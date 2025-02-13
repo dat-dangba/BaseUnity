@@ -29,24 +29,6 @@ public class TimeRequest : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    if (internetDisconected && Application.internetReachability != NetworkReachability.NotReachable)
-    //    {
-    //        internetDisconected = false;
-    //        if (!isRequest)
-    //        {
-    //            RequestNetWorkTime();
-    //        }
-    //    }
-    //    else if (!internetDisconected && Application.internetReachability == NetworkReachability.NotReachable)
-    //    {
-    //        StopAllCoroutines();
-    //        internetDisconected = true;
-    //        countRequest = 0;
-    //    }
-    //}
-
     private void RequestNetWorkTime()
     {
         try
@@ -59,8 +41,9 @@ public class TimeRequest : MonoBehaviour
                 InitTime(dt);
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Debug.LogError($"datdb - {e.Message}");
             countRequest++;
             if (countRequest >= ntps.Count)
             {
