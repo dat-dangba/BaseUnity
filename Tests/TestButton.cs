@@ -12,24 +12,19 @@ public class TestButton : BaseButton
     [SerializeField, GetInChildren]
     private TextMeshProUGUI text;
 
+    private bool b;
+
     protected override void OnClick()
     {
-        //if (!b)
-        //{
-        //    UIManager.Instance.Show<OneUI>();
-        //}
-        //else
-        //{
-        //    UIManager.Instance.Show<TwoUI>();
-        //}
-        //b = !b;
-
-        //UIManager.Instance.Show<TwoUI>();
-        //UIManager.Instance.Show<OneUI>();
-
-
-
-
-        SaveManager.Instance.DataSave.Score = 1;
+        if (!b)
+        {
+            UIManager.Instance.Show<TwoUI>();
+            UIManager.Instance.Show<OneUI>();
+        }
+        else
+        {
+            UIManager.Instance.HideAllIgnore<OneUI>();
+        }
+        b = !b;
     }
 }

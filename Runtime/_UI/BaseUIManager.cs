@@ -223,7 +223,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     {
         foreach (var item in uiLoadeds)
         {
-            if (item.Value != null && item.Value.gameObject.activeSelf && item.GetType() != typeof(T))
+            if (item.Value != null && item.Value.gameObject.activeSelf && item.Value.GetType() != typeof(T))
             {
                 item.Value.Hide();
             }
