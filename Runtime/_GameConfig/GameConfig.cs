@@ -10,6 +10,12 @@ public class GameConfig : Singleton<GameConfig>
     private static extern IntPtr GetInfoPlistValue(string key);
 #endif
 
+    protected override void ResetValue()
+    {
+        base.ResetValue();
+        dontDestroyOnLoad = true;
+    }
+
     public int GetConfig(string key, int defaultValue)
     {
         if (Application.platform == RuntimePlatform.Android)
