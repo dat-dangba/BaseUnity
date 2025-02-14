@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class TestMonthlyEvent : MonthlyEvent
 {
-    //private MonthlyData monthlyData;
+    private MonthlyEventData data;
 
     protected override void GetDataEvent()
     {
-        //monthlyData = SaveManager.Instance.GetEventData<MonthlyData>();
+        data = SaveManager.Instance.GetEventData<MonthlyEventData>();
     }
 
     protected override void NextEvent(int numberOfEvent)
     {
         Debug.Log($"datdb - Next Event Monthly");
-        //monthlyData.NumberOfEvent = numberOfEvent;
+        data.NumberOfEvent = numberOfEvent;
     }
 
     protected override int NumberOfEvent()
     {
-        return 0;// monthlyData.NumberOfEvent;
+        return data.NumberOfEvent;
     }
 }
