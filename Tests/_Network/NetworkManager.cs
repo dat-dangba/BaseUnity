@@ -16,7 +16,6 @@ public class NetworkManager : BaseNetworkManager<NetworkManager>
 
     protected override void OnNetworkStateChanged(bool isConnected)
     {
-        Debug.Log($"datdb - OnNetworkStateChanged {isConnected}");
         noInternetUI.SetActive(!isConnected);
     }
 }

@@ -15,4 +15,9 @@ public abstract class MonthlyEvent : BaseEvent
         int daysInMonth = DateTime.DaysInMonth(year, month);
         return TimeSpan.FromDays(daysInMonth);
     }
+
+    protected override int GetNumberOfEvent(DateTime startDateTime, DateTime currentDateTime, TimeSpan timeElapsed)
+    {
+        return (currentDateTime.Year - startDateTime.Year) * 12 + (currentDateTime.Month - startDateTime.Month);
+    }
 }

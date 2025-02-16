@@ -15,21 +15,28 @@ public abstract class BaseEvent : BaseMonoBehaviour
     [SerializeField]
     private double nextEventTime;
     [SerializeField]
-    private int numberOfEvents;
+    private int numberOfEvent;
 
     protected double EventTime { get => eventTime; private set => eventTime = value; }
     protected double NextEventTime { get => nextEventTime; private set => nextEventTime = value; }
     protected bool IsEventHappening { get => isEventHappening; private set => isEventHappening = value; }
     public bool IsInEvent { get => isInEvent; private set => isInEvent = value; }
 
-    public virtual void CheckEventStatus()
+    protected override void Start()
+    {
+        base.Start();
+        GetDataEvent();
+    }
+
+    public virtual void CheckEvent()
     {
         DateTime startDateTime = GetTimeStart();
         DateTime currentDateTime = TimeManager.Instance.DateTimeOffset.LocalDateTime;
         TimeSpan timeElapsed = currentDateTime - startDateTime;
 
-        numberOfEvents = (int)(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours);
-        if ((GetLoop() != -1 && numberOfEvents >= GetLoop()) || timeElapsed.TotalHours < 0)
+        numberOfEvent = GetNumberOfEvent(startDateTime, currentDateTime, timeElapsed);
+
+        if ((GetLoop() != -1 && numberOfEvent >= GetLoop()) || timeElapsed.TotalHours < 0)
         {
             isInEvent = false;
             isEventHappening = false;
@@ -41,30 +48,27 @@ public abstract class BaseEvent : BaseMonoBehaviour
         isInEvent = true;
         isEventHappening = (timeElapsed.TotalHours % (EventDuration() + BreakTime()).TotalHours) < EventDuration().TotalHours;
 
-        DateTime eventStartTime = startDateTime + TimeSpan.FromHours(Math.Floor(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours) * (EventDuration() + BreakTime()).TotalHours);
-        DateTime eventEndTime = eventStartTime + EventDuration();
-        eventTime = (float)(eventEndTime - currentDateTime).TotalSeconds;
+        StopAllCoroutines();
+
+        if (isEventHappening)
+        {
+            DateTime eventStartTime = startDateTime + TimeSpan.FromHours(Math.Floor(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours) * (EventDuration() + BreakTime()).TotalHours);
+            DateTime eventEndTime = eventStartTime + EventDuration();
+            eventTime = (float)(eventEndTime - currentDateTime).TotalSeconds;
+            StartCoroutine(CountDownRemainingTime());
+        }
+        else
+        {
+            eventTime = 0;
+        }
 
         nextEventTime = (float)((EventDuration() + BreakTime()).TotalSeconds - (timeElapsed.TotalSeconds % (EventDuration() + BreakTime()).TotalSeconds));
-
-        StopAllCoroutines();
-        StartCoroutine(CountDownRemainingTime());
         StartCoroutine(CountDownTimeToNextEvent());
 
-        //if (isEventHappening)
-        //{
-        //    DateTime eventStartTime = startDateTime + TimeSpan.FromHours(Math.Floor(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours) * (EventDuration() + BreakTime()).TotalHours);
-        //    DateTime eventEndTime = eventStartTime + EventDuration();
-        //    eventTime = (float)(eventEndTime - currentDateTime).TotalSeconds;
-        //    StopAllCoroutines();
-        //    StartCoroutine(CountDownRemainingTime());
-        //}
-        //else
-        //{
-        //    nextEventTime = (float)((EventDuration() + BreakTime()).TotalSeconds - (timeElapsed.TotalSeconds % (EventDuration() + BreakTime()).TotalSeconds));
-        //    StopAllCoroutines();
-        //    StartCoroutine(CountDownTimeToNextEvent());
-        //}
+        if (numberOfEvent != NumberOfEvent())
+        {
+            NextEvent(numberOfEvent);
+        }
     }
 
     private IEnumerator CountDownTimeToNextEvent()
@@ -74,7 +78,7 @@ public abstract class BaseEvent : BaseMonoBehaviour
             nextEventTime -= Time.deltaTime;
             yield return null;
         }
-        CheckEventStatus();
+        CheckEvent();
     }
 
 
@@ -85,7 +89,12 @@ public abstract class BaseEvent : BaseMonoBehaviour
             eventTime -= Time.deltaTime;
             yield return null;
         }
-        CheckEventStatus();
+        CheckEvent();
+    }
+
+    protected virtual int GetNumberOfEvent(DateTime startDateTime, DateTime currentDateTime, TimeSpan timeElapsed)
+    {
+        return (int)(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours);
     }
 
     /*
@@ -106,5 +115,9 @@ public abstract class BaseEvent : BaseMonoBehaviour
 
     protected abstract TimeSpan BreakTime();
 
-    public abstract void NextEvent();
+    protected abstract void GetDataEvent();
+
+    protected abstract int NumberOfEvent();
+
+    protected abstract void NextEvent(int numberOfEvent);
 }

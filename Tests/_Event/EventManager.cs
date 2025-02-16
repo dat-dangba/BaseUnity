@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EventManager : BaseEventManager<EventManager>
 {
-    protected override TimeData GetTimeData()
-    {
-        return SaveManager.Instance.DataSave.TimeData;
-    }
+    //protected override TimeData GetTimeData()
+    //{
+    //    return SaveManager.Instance.DataSave.TimeData;
+    //}
 
     public void Test()
     {
