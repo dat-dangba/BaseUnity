@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class TestDailyEvent : DailyEvent
 {
-    private DailyData dailyData;
+    //private DailyData dailyData;
 
     protected override void GetDataEvent()
     {
-        dailyData = SaveManager.Instance.GetEventData<DailyData>();
+        //dailyData = SaveManager.Instance.GetEventData<DailyData>();
     }
 
     protected override void NextEvent(int numberOfEvent)
     {
         Debug.Log($"datdb - Next Event Daily");
-        dailyData.NumberOfEvent = numberOfEvent;
+        //dailyData.NumberOfEvent = numberOfEvent;
     }
 
     protected override int NumberOfEvent()
     {
-        return dailyData.NumberOfEvent;
+        return 0;//dailyData.NumberOfEvent;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TestCustomEvent : BaseEvent
 {
-    private CustomData customData;
+    //private CustomData customData;
 
     protected override TimeSpan BreakTime()
     {
@@ -19,18 +19,18 @@ public class TestCustomEvent : BaseEvent
 
     protected override void GetDataEvent()
     {
-        customData = SaveManager.Instance.GetEventData<CustomData>();
+        //customData = SaveManager.Instance.GetEventData<CustomData>();
     }
 
     protected override void NextEvent(int numberOfEvent)
     {
         Debug.Log($"datdb - Next Event Custom");
-        customData.NumberOfEvent = numberOfEvent;
+        //customData.NumberOfEvent = numberOfEvent;
     }
 
     protected override int NumberOfEvent()
     {
-        return customData.NumberOfEvent;
+        return 0;//;customData.NumberOfEvent;
     }
 
     protected override DateTime GetTimeStart()
