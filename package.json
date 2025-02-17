@@ -3,11 +3,9 @@
     "displayName": "DDB-BaseUnity",
     "description": "Base Unity",
     "author": "datdb",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "unity": "2018.3",
     "website": "https://github.com/dat-dangba/BaseUnity",
     "license": "MIT",
-    "dependencies": {
-        "com.unity.mobile.notifications": "2.4.0"
-    }
+    "dependencies": {}
 }
