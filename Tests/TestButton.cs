@@ -36,5 +36,8 @@ public class TestButton : BaseButton
         stopwatch.Stop();
         UnityEngine.Debug.Log($"datdb - {stopwatch.ElapsedMilliseconds}");
 
+        Time.timeScale = 0;
+        UnityEngine.Debug.Log($"datdb - timeScale {Time.timeScale}");
+
     }
 }

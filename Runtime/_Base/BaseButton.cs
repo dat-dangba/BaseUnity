@@ -73,7 +73,7 @@ public abstract class BaseButton : BaseMonoBehaviour, IPointerDownHandler, IPoin
         float temp = 0f;
         while (temp < 0.1f)
         {
-            temp += Time.deltaTime;
+            temp += Time.unscaledDeltaTime;
             temp = Mathf.Clamp(temp, 0, 0.1f);
 
             float f;
