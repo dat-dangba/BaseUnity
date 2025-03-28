@@ -24,13 +24,15 @@ public class BaseUI : BaseMonoBehaviour
      */
     public virtual void Show()
     {
-        container.localScale = Vector3.zero;
         gameObject.SetActive(true);
         StartCoroutine(AnimShow());
     }
 
     protected virtual IEnumerator AnimShow()
     {
+        if (!container) yield break;
+
+        container.localScale = Vector3.zero;
         float time = 0;
         while (time < durationAnim)
         {
@@ -77,17 +79,20 @@ public class BaseUI : BaseMonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        float time = durationAnim;
-        while (time > 0)
+        if (container)
         {
-            float t = time / durationAnim;
-            t = EaseInBack(t);
-            container.localScale = new Vector3(t, t, t);
-            time -= Time.deltaTime;
-            yield return null;
-        }
+            float time = durationAnim;
+            while (time > 0)
+            {
+                float t = time / durationAnim;
+                t = EaseInBack(t);
+                container.localScale = new Vector3(t, t, t);
+                time -= Time.deltaTime;
+                yield return null;
+            }
 
-        container.localScale = Vector3.zero;
+            container.localScale = Vector3.zero;
+        }
 
         Invisible();
     }
