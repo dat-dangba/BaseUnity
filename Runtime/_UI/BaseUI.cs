@@ -40,7 +40,7 @@ public class BaseUI : BaseMonoBehaviour
             float t = time / durationAnim;
             t = EaseOutBack(t);
             container.localScale = new Vector3(t, t, t);
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -94,7 +94,7 @@ public class BaseUI : BaseMonoBehaviour
                 float t = time / durationAnim;
                 t = EaseInBack(t);
                 container.localScale = new Vector3(t, t, t);
-                time -= Time.deltaTime;
+                time -= Time.unscaledDeltaTime;
                 yield return null;
             }
 
