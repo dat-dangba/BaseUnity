@@ -25,6 +25,7 @@ public class BaseUI : BaseMonoBehaviour
     public virtual void Show()
     {
         gameObject.SetActive(true);
+        if (!IsUseAnim()) return;
         StartCoroutine(AnimShow());
     }
 
@@ -56,6 +57,12 @@ public class BaseUI : BaseMonoBehaviour
      */
     public virtual void Hide(float delayTime = 0)
     {
+        if (!IsUseAnim())
+        {
+            Invisible();
+            return;
+        }
+
         StartCoroutine(AnimHide(delayTime));
     }
 
@@ -100,5 +107,10 @@ public class BaseUI : BaseMonoBehaviour
     private float EaseInBack(float t, float s = 1.70158f)
     {
         return 1 - ((1 - t) * (1 - t) * ((s + 1) * (1 - t) - s));
+    }
+
+    protected virtual bool IsUseAnim()
+    {
+        return true;
     }
 }
