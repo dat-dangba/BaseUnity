@@ -42,7 +42,9 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     }
 
     #region Singleton
+
     private static I instance;
+
     public static I Instance
     {
         get
@@ -57,6 +59,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
@@ -78,6 +81,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
                     DontDestroyOnLoad(gameObject);
                 }
             }
+
             CreateUIPrefabs();
         }
         else
@@ -85,6 +89,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
             Destroy(gameObject);
         }
     }
+
     #endregion
 
     private void CreateUIPrefabs()
@@ -102,13 +107,23 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     public virtual T Show<T>() where T : BaseUI
     {
         T ui = GetUI<T>();
+        ui.SetUp();
+        ui.Show();
 
+        ui.transform.SetSiblingIndex(GetParent().childCount - 1);
+        return ui;
+    }
+
+    public virtual void Show<T>(Action<T> beforeShow, Action<T> afterShow) where T : BaseUI
+    {
+        T ui = GetUI<T>();
+        beforeShow?.Invoke(ui);
         ui.SetUp();
         ui.Show();
 
         ui.transform.SetSiblingIndex(GetParent().childCount - 1);
 
-        return ui;
+        afterShow?.Invoke(ui);
     }
 
     /*
@@ -131,7 +146,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     }
 
     /*
-     * Kiểm tra UI đã được hiển thị chưa 
+     * Kiểm tra UI đã được hiển thị chưa
      */
     public virtual bool IsUIDisplayed<T>() where T : BaseUI
     {
@@ -139,7 +154,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     }
 
     /*
-     * Kiểm tra chỉ show một mình UI 
+     * Kiểm tra chỉ show một mình UI
      */
     public virtual bool IsUIOnlyDisplay<T>() where T : BaseUI
     {
@@ -159,11 +174,12 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
                 }
             }
         }
+
         return isOnlyDisplay;
     }
 
     /*
-     * Kiểm tra UI có hiển thị trên cùng không 
+     * Kiểm tra UI có hiển thị trên cùng không
      */
     public virtual bool IsUIOnTop<T>() where T : BaseUI
     {
@@ -178,6 +194,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
                 }
             }
         }
+
         return false;
     }
 
@@ -186,14 +203,14 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
      */
     public virtual T GetUI<T>() where T : BaseUI
     {
-        if (!IsUILoaded<T>())
-        {
-            T prefab = GetUIPrefab<T>();
-            T ui = Instantiate(prefab, GetParent());
-            ui.name = prefab.name;
+        if (IsUILoaded<T>()) return uiLoadeds[typeof(T)] as T;
+        T prefab = GetUIPrefab<T>();
+        T ui = Instantiate(prefab, GetParent());
+        ui.gameObject.SetActive(false);
+        ui.name = prefab.name;
 
-            uiLoadeds[typeof(T)] = ui;
-        }
+        uiLoadeds[typeof(T)] = ui;
+
         return uiLoadeds[typeof(T)] as T;
     }
 
@@ -203,7 +220,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     }
 
     /*
-     * Ẩn toàn bộ UI  
+     * Ẩn toàn bộ UI
      */
     public virtual void HideAll()
     {
@@ -217,7 +234,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     }
 
     /*
-     * Ẩn toàn bộ UI trừ T 
+     * Ẩn toàn bộ UI trừ T
      */
     public virtual void HideAllIgnore<T>() where T : BaseUI
     {

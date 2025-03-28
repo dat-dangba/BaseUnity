@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class TestButton : BaseButton
 {
-    [SerializeField, GetInParent]
-    private Canvas canvas;
+    [SerializeField, GetInParent] private Canvas canvas;
 
-    [SerializeField, GetInChildren]
-    private TextMeshProUGUI text;
+    [SerializeField, GetInChildren] private TextMeshProUGUI text;
 
     private bool b;
 
@@ -27,17 +25,18 @@ public class TestButton : BaseButton
         //b = !b;
 
 
-        Stopwatch stopwatch = new();
-        stopwatch.Start();
+        // Stopwatch stopwatch = new();
+        // stopwatch.Start();
+        //
+        // // Gọi hàm cần đo thời gian
+        // SaveManager.Instance.SaveData();
+        //
+        // stopwatch.Stop();
+        // UnityEngine.Debug.Log($"datdb - {stopwatch.ElapsedMilliseconds}");
+        //
+        // Time.timeScale = 0;
+        // UnityEngine.Debug.Log($"datdb - timeScale {Time.timeScale}");
 
-        // Gọi hàm cần đo thời gian
-        SaveManager.Instance.SaveData();
-
-        stopwatch.Stop();
-        UnityEngine.Debug.Log($"datdb - {stopwatch.ElapsedMilliseconds}");
-
-        Time.timeScale = 0;
-        UnityEngine.Debug.Log($"datdb - timeScale {Time.timeScale}");
-
+        UIManager.Instance.Show<OneUI>();
     }
 }

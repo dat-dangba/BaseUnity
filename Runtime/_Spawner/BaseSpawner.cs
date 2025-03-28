@@ -7,10 +7,16 @@ public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component 
     [SerializeField] private int spawnedCount = 0;
     [SerializeField] protected List<T> poolObjs = new();
 
-    protected int SpawnedCount { get => spawnedCount; private set => spawnedCount = value; }
+    protected int SpawnedCount
+    {
+        get => spawnedCount;
+        private set => spawnedCount = value;
+    }
 
     #region Singleton
+
     private static I instance;
+
     public static I Instance
     {
         get
@@ -25,6 +31,7 @@ public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component 
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
@@ -52,9 +59,10 @@ public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component 
             Destroy(gameObject);
         }
     }
+
     #endregion
 
-    public T Spawn(Vector3 spawnPos, bool show = false)
+    public virtual T Spawn(Vector3 spawnPos, bool show = false)
     {
         return Spawn(spawnPos, Quaternion.identity, show);
     }

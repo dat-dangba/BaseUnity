@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Singleton<T> : BaseMonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField]
-    protected bool dontDestroyOnLoad = false;
+    [SerializeField] protected bool dontDestroyOnLoad = true;
 
     private static T instance;
+
     public static T Instance
     {
         get
@@ -22,6 +22,7 @@ public class Singleton<T> : BaseMonoBehaviour where T : MonoBehaviour
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
