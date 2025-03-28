@@ -206,7 +206,6 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
         if (IsUILoaded<T>()) return uiLoadeds[typeof(T)] as T;
         T prefab = GetUIPrefab<T>();
         T ui = Instantiate(prefab, GetParent());
-        ui.gameObject.SetActive(false);
         ui.name = prefab.name;
 
         uiLoadeds[typeof(T)] = ui;

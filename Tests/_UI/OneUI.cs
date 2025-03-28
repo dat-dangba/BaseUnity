@@ -9,6 +9,12 @@ public class OneUI : BaseUI
         UIManager.Instance.Hide<OneUI>();
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        Debug.Log($"datdb - OnEnable OneUI");
+    }
+
     protected override void OnDisable()
     {
         base.OnDisable();
