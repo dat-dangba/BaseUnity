@@ -114,7 +114,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
         return ui;
     }
 
-    public virtual void Show<T>(Action<T> beforeShow, Action<T> afterShow) where T : BaseUI
+    public virtual void Show<T>(Action<T> beforeShow, Action<T> afterShow = null) where T : BaseUI
     {
         T ui = GetUI<T>();
         beforeShow?.Invoke(ui);
