@@ -137,6 +137,14 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
         }
     }
 
+    public virtual void HideDirectly<T>() where T : BaseUI
+    {
+        if (IsUILoaded<T>())
+        {
+            uiLoadeds[typeof(T)].HideDirectly();
+        }
+    }
+
     /*
      * Kiểm tra UI đã được tạo hay chưa
      */
@@ -221,13 +229,20 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     /*
      * Ẩn toàn bộ UI
      */
-    public virtual void HideAll()
+    public virtual void HideAll(bool isDirectly = true)
     {
         foreach (var item in uiLoadeds)
         {
             if (item.Value != null && item.Value.gameObject.activeSelf)
             {
-                item.Value.Hide();
+                if (isDirectly)
+                {
+                    item.Value.HideDirectly();
+                }
+                else
+                {
+                    item.Value.Hide();
+                }
             }
         }
     }
@@ -235,13 +250,20 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     /*
      * Ẩn toàn bộ UI trừ T
      */
-    public virtual void HideAllIgnore<T>() where T : BaseUI
+    public virtual void HideAllIgnore<T>(bool isDirectly) where T : BaseUI
     {
         foreach (var item in uiLoadeds)
         {
             if (item.Value != null && item.Value.gameObject.activeSelf && item.Value.GetType() != typeof(T))
             {
-                item.Value.Hide();
+                if (isDirectly)
+                {
+                    item.Value.HideDirectly();
+                }
+                else
+                {
+                    item.Value.Hide();
+                }
             }
         }
     }

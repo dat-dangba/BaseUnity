@@ -66,9 +66,10 @@ public class BaseUI : BaseMonoBehaviour
         StartCoroutine(AnimHide(delayTime));
     }
 
-    /*
-     * Hide
-     */
+    public virtual void HideDirectly()
+    {
+        Invisible();
+    }
 
     protected virtual void Invisible()
     {
