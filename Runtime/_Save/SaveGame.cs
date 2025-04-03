@@ -16,6 +16,7 @@ public class SaveGame
         {
             return "";
         }
+
         string dataEncode = File.ReadAllText(dataPath);
         return Decode(dataEncode);
     }
@@ -23,7 +24,7 @@ public class SaveGame
     public static void SaveData(string data)
     {
         File.WriteAllText(GetPath(), Encode(data));
-        Debug.Log($"----------SAVE GAME----------\n{GetPath()}");
+        Debug.LogWarning($"----------SAVE GAME----------\n{GetPath()}");
     }
 
     public static void ClearData()
