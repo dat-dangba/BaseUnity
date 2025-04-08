@@ -131,7 +131,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
      */
     public virtual void Hide<T>(float delayTime = 0) where T : BaseUI
     {
-        if (IsUILoaded<T>())
+        if (IsUIDisplayed<T>())
         {
             uiLoadeds[typeof(T)].Hide(delayTime);
         }
@@ -139,7 +139,7 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
 
     public virtual void HideDirectly<T>() where T : BaseUI
     {
-        if (IsUILoaded<T>())
+        if (IsUIDisplayed<T>())
         {
             uiLoadeds[typeof(T)].HideDirectly();
         }

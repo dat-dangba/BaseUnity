@@ -4,12 +4,13 @@ using UnityEngine;
 
 public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBehaviour where T : class, new()
 {
-    [SerializeField]
-    private T dataSave;
+    [SerializeField] private T dataSave;
     public T DataSave => dataSave;
 
     #region Singleton
+
     private static I instance;
+
     public static I Instance
     {
         get
@@ -24,6 +25,7 @@ public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBe
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
@@ -42,6 +44,7 @@ public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBe
             {
                 DontDestroyOnLoad(gameObject);
             }
+
             LoadData();
         }
         else
@@ -49,6 +52,7 @@ public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBe
             Destroy(gameObject);
         }
     }
+
     #endregion
 
     protected override void Reset()
@@ -57,7 +61,7 @@ public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBe
         ClearData();
     }
 
-    private void OnApplicationFocus(bool focus)
+    protected virtual void OnApplicationFocus(bool focus)
     {
         if (!focus)
         {
@@ -65,7 +69,7 @@ public abstract class BaseSaveManager<I, T> : BaseMonoBehaviour where I : MonoBe
         }
     }
 
-    private void OnApplicationPause(bool pause)
+    protected virtual void OnApplicationPause(bool pause)
     {
         if (pause)
         {
