@@ -14,7 +14,9 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
     private readonly float checkInterval = 3f; // Khoảng thời gian kiểm tra kết nối (giây)
 
     #region Singleton
+
     private static I instance;
+
     public static I Instance
     {
         get
@@ -29,6 +31,7 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
@@ -53,6 +56,7 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
             Destroy(gameObject);
         }
     }
+
     #endregion
 
     public virtual void StartCheckConnection()
@@ -78,7 +82,8 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
             {
                 yield return CheckInternetConnection();
             }
-            yield return new WaitForSeconds(GetCheckInterval());
+
+            yield return new WaitForSecondsRealtime(GetCheckInterval());
         }
     }
 
@@ -118,7 +123,8 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
         request.timeout = GetTimeOutRequest();
         yield return request.SendWebRequest();
 
-        NetworkStateChanged(!(request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError));
+        NetworkStateChanged(!(request.result == UnityWebRequest.Result.ConnectionError ||
+                              request.result == UnityWebRequest.Result.ProtocolError));
     }
 
     protected virtual void NetworkStateChanged(bool isConnected)
@@ -129,6 +135,7 @@ public abstract class BaseNetworkManager<I> : BaseMonoBehaviour where I : MonoBe
             IsConnected = isConnected;
             OnNetworkStateChanged(IsConnected);
         }
+
         isRequesting = false;
     }
 
