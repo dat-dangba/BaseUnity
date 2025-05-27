@@ -8,7 +8,9 @@ public abstract class BaseEventManager<I> : BaseMonoBehaviour where I : MonoBeha
     [SerializeField, GetInChildren] private List<BaseEvent> events;
 
     #region Singleton
+
     private static I instance;
+
     public static I Instance
     {
         get
@@ -23,6 +25,7 @@ public abstract class BaseEventManager<I> : BaseMonoBehaviour where I : MonoBeha
                     DontDestroyOnLoad(singleton);
                 }
             }
+
             return instance;
         }
     }
@@ -47,6 +50,7 @@ public abstract class BaseEventManager<I> : BaseMonoBehaviour where I : MonoBeha
             Destroy(gameObject);
         }
     }
+
     #endregion
 
     protected override void OnEnable()
@@ -82,6 +86,7 @@ public abstract class BaseEventManager<I> : BaseMonoBehaviour where I : MonoBeha
                 return item as E;
             }
         }
+
         return null;
     }
 }

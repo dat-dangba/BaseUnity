@@ -73,6 +73,7 @@ public class TimeRequest : MonoBehaviour
         Debug.Log($"datdb - InitTime {dateTime.ToLongDateString()} {dateTime.ToLongTimeString()}");
         TimeManager.Instance.Init(TimeManager.Instance.GetTotalSeconds(dateTime));
         isRequested = true;
+        OnTimeRequestSuccess?.Invoke();
         // Invoke(nameof(RaiseTimeRequestSuccess), 0.5f);
     }
 
@@ -81,10 +82,10 @@ public class TimeRequest : MonoBehaviour
     //     OnTimeRequestSuccess?.Invoke();
     // }
 
-    private void LateUpdate()
-    {
-        if (!isRequested || isRaiseAction) return;
-        isRaiseAction = true;
-        OnTimeRequestSuccess?.Invoke();
-    }
+    // private void LateUpdate()
+    // {
+    //     if (!isRequested || isRaiseAction) return;
+    //     isRaiseAction = true;
+    //     OnTimeRequestSuccess?.Invoke();
+    // }
 }

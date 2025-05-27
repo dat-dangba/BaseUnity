@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class UIManager : BaseUIManager<UIManager>
 {
-    [SerializeField, Get]
-    private Transform parent;
+    [SerializeField, Get] private Transform parent;
 
     protected override Transform GetParent()
     {
@@ -17,10 +16,5 @@ public class UIManager : BaseUIManager<UIManager>
     protected override string GetFolderPrefabs()
     {
         return "Assets/UI";
-    }
-
-    public void Test()
-    {
-
     }
 }
