@@ -6,6 +6,7 @@ public class TimeRequest : MonoBehaviour
 {
     private int countRequest;
     private bool isRequested;
+    // private bool isRaiseAction;
 
     private readonly List<string> ntps = new()
     {
@@ -23,6 +24,7 @@ public class TimeRequest : MonoBehaviour
         {
             return;
         }
+
         countRequest = 0;
         if (Application.internetReachability != NetworkReachability.NotReachable)
         {
@@ -40,6 +42,7 @@ public class TimeRequest : MonoBehaviour
         {
             return;
         }
+
         try
         {
             NtpClient client = new(ntps[countRequest]);
@@ -68,8 +71,20 @@ public class TimeRequest : MonoBehaviour
     private void InitTime(DateTime dateTime)
     {
         Debug.Log($"datdb - InitTime {dateTime.ToLongDateString()} {dateTime.ToLongTimeString()}");
-        isRequested = true;
         TimeManager.Instance.Init(TimeManager.Instance.GetTotalSeconds(dateTime));
+        isRequested = true;
+        Invoke(nameof(RaiseTimeRequestSuccess), 0.5f);
+    }
+
+    private void RaiseTimeRequestSuccess()
+    {
         OnTimeRequestSuccess?.Invoke();
     }
+
+    // private void LateUpdate()
+    // {
+    //     if (!isRequested || isRaiseAction) return;
+    //     isRaiseAction = true;
+    //     OnTimeRequestSuccess?.Invoke();
+    // }
 }
