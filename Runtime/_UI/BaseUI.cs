@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Teo.AutoReference;
@@ -55,7 +56,7 @@ public class BaseUI : BaseMonoBehaviour
     /*
      * Hide UI sau thời gian delayTime mặc định là 0
      */
-    public virtual void Hide(float delayTime = 0)
+    public virtual void Hide(float delayTime = 0, Action OnInvisible = null)
     {
         if (!IsUseAnim())
         {
@@ -63,7 +64,7 @@ public class BaseUI : BaseMonoBehaviour
             return;
         }
 
-        StartCoroutine(AnimHide(delayTime));
+        StartCoroutine(AnimHide(delayTime, OnInvisible));
     }
 
     public virtual void HideDirectly()
@@ -83,7 +84,7 @@ public class BaseUI : BaseMonoBehaviour
         }
     }
 
-    protected virtual IEnumerator AnimHide(float delay)
+    protected virtual IEnumerator AnimHide(float delay, Action OnInvisible)
     {
         yield return new WaitForSeconds(delay);
 
@@ -103,6 +104,7 @@ public class BaseUI : BaseMonoBehaviour
         }
 
         Invisible();
+        OnInvisible?.Invoke();
     }
 
     private float EaseInBack(float t, float s = 1.70158f)
