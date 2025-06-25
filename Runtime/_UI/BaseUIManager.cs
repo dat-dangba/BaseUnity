@@ -129,11 +129,11 @@ public abstract class BaseUIManager<I> : BaseMonoBehaviour where I : BaseMonoBeh
     /*
      * Ẩn UI show khoảng thời gian delayTime mặc định = 0
      */
-    public virtual void Hide<T>(float delayTime = 0) where T : BaseUI
+    public virtual void Hide<T>(float delayTime = 0, Action OnInvisible = null) where T : BaseUI
     {
         if (IsUIDisplayed<T>())
         {
-            uiLoadeds[typeof(T)].Hide(delayTime);
+            uiLoadeds[typeof(T)].Hide(delayTime, OnInvisible);
         }
     }
 
