@@ -6,21 +6,35 @@ public abstract class BaseEvent : BaseMonoBehaviour
 {
     private readonly DateTime timeStart = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    [SerializeField]
-    private bool isEventHappening;
-    [SerializeField]
-    private bool isInEvent;
-    [SerializeField]
-    private double eventTime;
-    [SerializeField]
-    private double nextEventTime;
-    [SerializeField]
-    private int numberOfEvent;
+    [SerializeField] protected bool isEventHappening;
+    [SerializeField] protected bool isInEvent;
+    [SerializeField] protected double eventTime;
+    [SerializeField] protected double nextEventTime;
+    [SerializeField] protected int numberOfEvent;
 
-    protected double EventTime { get => eventTime; private set => eventTime = value; }
-    protected double NextEventTime { get => nextEventTime; private set => nextEventTime = value; }
-    protected bool IsEventHappening { get => isEventHappening; private set => isEventHappening = value; }
-    public bool IsInEvent { get => isInEvent; private set => isInEvent = value; }
+    protected double EventTime
+    {
+        get => eventTime;
+        private set => eventTime = value;
+    }
+
+    protected double NextEventTime
+    {
+        get => nextEventTime;
+        private set => nextEventTime = value;
+    }
+
+    protected bool IsEventHappening
+    {
+        get => isEventHappening;
+        private set => isEventHappening = value;
+    }
+
+    public bool IsInEvent
+    {
+        get => isInEvent;
+        private set => isInEvent = value;
+    }
 
     protected override void Start()
     {
@@ -46,13 +60,16 @@ public abstract class BaseEvent : BaseMonoBehaviour
         }
 
         isInEvent = true;
-        isEventHappening = (timeElapsed.TotalHours % (EventDuration() + BreakTime()).TotalHours) < EventDuration().TotalHours;
+        isEventHappening = (timeElapsed.TotalHours % (EventDuration() + BreakTime()).TotalHours) <
+                           EventDuration().TotalHours;
 
         StopAllCoroutines();
 
         if (isEventHappening)
         {
-            DateTime eventStartTime = startDateTime + TimeSpan.FromHours(Math.Floor(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours) * (EventDuration() + BreakTime()).TotalHours);
+            DateTime eventStartTime = startDateTime + TimeSpan.FromHours(
+                Math.Floor(timeElapsed.TotalHours / (EventDuration() + BreakTime()).TotalHours) *
+                (EventDuration() + BreakTime()).TotalHours);
             DateTime eventEndTime = eventStartTime + EventDuration();
             eventTime = (float)(eventEndTime - currentDateTime).TotalSeconds;
             StartCoroutine(CountDownRemainingTime());
@@ -62,7 +79,8 @@ public abstract class BaseEvent : BaseMonoBehaviour
             eventTime = 0;
         }
 
-        nextEventTime = (float)((EventDuration() + BreakTime()).TotalSeconds - (timeElapsed.TotalSeconds % (EventDuration() + BreakTime()).TotalSeconds));
+        nextEventTime = (float)((EventDuration() + BreakTime()).TotalSeconds -
+                                (timeElapsed.TotalSeconds % (EventDuration() + BreakTime()).TotalSeconds));
         StartCoroutine(CountDownTimeToNextEvent());
 
         if (numberOfEvent != NumberOfEvent())
@@ -78,6 +96,7 @@ public abstract class BaseEvent : BaseMonoBehaviour
             nextEventTime -= Time.deltaTime;
             yield return null;
         }
+
         CheckEvent();
     }
 
@@ -89,6 +108,7 @@ public abstract class BaseEvent : BaseMonoBehaviour
             eventTime -= Time.deltaTime;
             yield return null;
         }
+
         CheckEvent();
     }
 
@@ -99,7 +119,7 @@ public abstract class BaseEvent : BaseMonoBehaviour
 
     /*
      * -1 lặp lại liên tục
-     * 1,2,3,4.. sô vòng lặp của event > 0 
+     * 1,2,3,4.. sô vòng lặp của event > 0
      */
     protected virtual int GetLoop()
     {
