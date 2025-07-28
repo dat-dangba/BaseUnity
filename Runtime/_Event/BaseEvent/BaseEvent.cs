@@ -89,7 +89,7 @@ public abstract class BaseEvent : BaseMonoBehaviour
         }
     }
 
-    private IEnumerator CountDownTimeToNextEvent()
+    protected IEnumerator CountDownTimeToNextEvent()
     {
         while (nextEventTime > 0)
         {
