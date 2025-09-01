@@ -33,8 +33,13 @@ public class TimeRequest : MonoBehaviour
         }
         else
         {
-            InitTime(DateTime.UtcNow);
+            Invoke(nameof(GetTimeOffline), 0.5f);
         }
+    }
+
+    private void GetTimeOffline()
+    {
+        InitTime(DateTime.UtcNow);
     }
 
     private void RequestNetWorkTime()
