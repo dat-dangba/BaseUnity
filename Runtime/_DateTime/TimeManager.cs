@@ -6,7 +6,8 @@ using UnityEngine;
 
 public enum TimeType
 {
-    UTC, LOCAL
+    UTC,
+    LOCAL
 }
 
 public class TimeManager : Singleton<TimeManager>
@@ -28,8 +29,17 @@ public class TimeManager : Singleton<TimeManager>
     public static event Action OnTimeUpdate;
     public static event Action OnNextDay;
 
-    public bool IsInitialed { get => isInitialed; private set => isInitialed = value; }
-    public DateTimeOffset DateTimeOffset { get => dateTimeOffset; set => dateTimeOffset = value; }
+    public bool IsInitialed
+    {
+        get => isInitialed;
+        private set => isInitialed = value;
+    }
+
+    public DateTimeOffset DateTimeOffset
+    {
+        get => dateTimeOffset;
+        set => dateTimeOffset = value;
+    }
 
     protected override void ResetValue()
     {
@@ -50,7 +60,7 @@ public class TimeManager : Singleton<TimeManager>
     {
         if (!isInitialed)
         {
-            timeRequest.Request();
+            timeRequest.Request(isUseLocalTime);
         }
     }
 
@@ -99,6 +109,7 @@ public class TimeManager : Singleton<TimeManager>
         {
             seconds = GetTotalSeconds(DateTime.UtcNow);
         }
+
         realTimeSinceStartup = Time.realtimeSinceStartupAsDouble;
         startDateTimeOffset = dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds((long)seconds);
         currentDay = GetDayString(GetDateTime(TimeType.LOCAL));
@@ -150,7 +161,8 @@ public class TimeManager : Singleton<TimeManager>
     {
         CultureInfo cultureInfo = CultureInfo.CurrentCulture;
         Calendar calendar = cultureInfo.Calendar;
-        int weekOfYear = calendar.GetWeekOfYear(GetDateTime(type), cultureInfo.DateTimeFormat.CalendarWeekRule, firstDayOfWeek);
+        int weekOfYear = calendar.GetWeekOfYear(GetDateTime(type), cultureInfo.DateTimeFormat.CalendarWeekRule,
+            firstDayOfWeek);
         return weekOfYear;
     }
 

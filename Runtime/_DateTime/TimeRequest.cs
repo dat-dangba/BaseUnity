@@ -18,7 +18,7 @@ public class TimeRequest : MonoBehaviour
 
     public static event Action OnTimeRequestSuccess;
 
-    public void Request()
+    public void Request(bool isUseLocalTime)
     {
         if (isRequested)
         {
@@ -26,7 +26,8 @@ public class TimeRequest : MonoBehaviour
         }
 
         countRequest = 0;
-        if (Application.internetReachability != NetworkReachability.NotReachable)
+        if (Application.internetReachability != NetworkReachability.NotReachable
+            && !isUseLocalTime)
         {
             RequestNetWorkTime();
         }
