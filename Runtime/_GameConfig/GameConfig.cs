@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+#if UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 public class GameConfig : Singleton<GameConfig>
 {
@@ -41,6 +44,7 @@ public class GameConfig : Singleton<GameConfig>
                 return int.Parse(value);
             }
         }
+
         return defaultValue;
     }
 
@@ -69,6 +73,7 @@ public class GameConfig : Singleton<GameConfig>
                 return float.Parse(value);
             }
         }
+
         return defaultValue;
     }
 
@@ -97,6 +102,7 @@ public class GameConfig : Singleton<GameConfig>
                 return value;
             }
         }
+
         return defaultValue;
     }
 
@@ -131,6 +137,7 @@ public class GameConfig : Singleton<GameConfig>
                 Debug.Log($"datdb - value null");
             }
         }
+
         return defaultValue;
     }
 
@@ -149,7 +156,8 @@ public class GameConfig : Singleton<GameConfig>
                 AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
                 string packageName = currentActivity.Call<string>("getPackageName");
                 AndroidJavaObject packageManager = currentActivity.Call<AndroidJavaObject>("getPackageManager");
-                AndroidJavaObject applicationInfo = packageManager.Call<AndroidJavaObject>("getApplicationInfo", packageName, 128);
+                AndroidJavaObject applicationInfo =
+                    packageManager.Call<AndroidJavaObject>("getApplicationInfo", packageName, 128);
                 return applicationInfo.Get<AndroidJavaObject>("metaData");
             }
             catch (Exception e)
@@ -158,6 +166,7 @@ public class GameConfig : Singleton<GameConfig>
                 return null;
             }
         }
+
         return null;
     }
 
