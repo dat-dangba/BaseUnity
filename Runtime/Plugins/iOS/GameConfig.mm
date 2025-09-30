@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-const char* GetPlistValue(const char* key) {
+const char* GetInfoPlistValue(const char* key) {
     @autoreleasepool {
         NSString *nsKey = [NSString stringWithUTF8String:key];
         id value = [[NSBundle mainBundle] objectForInfoDictionaryKey:nsKey];
