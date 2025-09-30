@@ -1,3 +1,4 @@
+#if UNITY_IOS && UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
@@ -5,7 +6,6 @@ using System.IO;
 
 public static class AddTrackingUsagePlist
 {
-#if UNITY_IOS
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -27,5 +27,5 @@ public static class AddTrackingUsagePlist
     
         File.WriteAllText(plistPath, plist.WriteToString());
     }
-#endif
 }
+#endif
