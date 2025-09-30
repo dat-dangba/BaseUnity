@@ -39,6 +39,7 @@ public class GameConfig : Singleton<GameConfig>
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             string value = GetPlistValue(key);
+            Debug.Log($"datdb - int value {value}");
             if (value != null)
             {
                 return int.Parse(value);
@@ -68,6 +69,7 @@ public class GameConfig : Singleton<GameConfig>
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             string value = GetPlistValue(key);
+            Debug.Log($"datdb - float value {value}");
             if (value != null)
             {
                 return float.Parse(value);
@@ -97,6 +99,7 @@ public class GameConfig : Singleton<GameConfig>
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             string value = GetPlistValue(key);
+            Debug.Log($"datdb - string value {value}");
             if (value != null)
             {
                 return value;
@@ -126,9 +129,9 @@ public class GameConfig : Singleton<GameConfig>
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             string value = GetPlistValue(key);
+            Debug.Log($"datdb - bool value {value}");
             if (value != null)
             {
-                Debug.Log($"datdb - value {value}");
                 return value != "0";
                 //return int.Parse(value);
             }
