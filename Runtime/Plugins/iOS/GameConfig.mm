@@ -1,5 +1,8 @@
 #import <Foundation/Foundation.h>
 
+extern "C"
+{
+
 const char* GetInfoPlistValue(const char* key) {
     @autoreleasepool {
         NSString *nsKey = [NSString stringWithUTF8String:key];
@@ -43,4 +46,5 @@ const char* GetInfoPlistValue(const char* key) {
 
         return strdup([result UTF8String]);
     }
+}
 }
