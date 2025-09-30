@@ -19,12 +19,7 @@ public static class AddTrackingUsagePlist
     
         const string key = "NSUserTrackingUsageDescription";
         string value = "Ứng dụng sử dụng IDFA để cá nhân hóa quảng cáo và thống kê hiệu quả.";
-    
-        if (!rootDict.values.ContainsKey(key)) // tránh overwrite nếu user đã tự set
-        {
-            rootDict.SetString(key, value);
-        }
-    
+        rootDict.SetString(key, value);
         File.WriteAllText(plistPath, plist.WriteToString());
     }
 }
